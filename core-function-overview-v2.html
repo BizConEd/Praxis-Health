@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EMR Comparison Matrix - Overview</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: white;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(70, 130, 180, 0.15);
+            overflow: hidden;
+            border: 1px solid #e8f4f8;
+        }
+
+        .header {
+            background: white;
+            color: #2c5282;
+            padding: 40px 30px;
+            text-align: center;
+            border-bottom: 2px solid #e8f4f8;
+        }
+
+        .header h1 {
+            font-size: 2.8em;
+            margin-bottom: 15px;
+            font-weight: bold;
+            color: #1a365d;
+            line-height: 1.2;
+        }
+
+        .header .subtitle {
+            font-size: 1.2em;
+            margin-bottom: 20px;
+            opacity: 0.9;
+            font-weight: 500;
+        }
+
+        .header .author {
+            font-size: 1.1em;
+            margin-bottom: 25px;
+            font-style: italic;
+            opacity: 0.8;
+        }
+
+        .data-sources {
+            background: #f8f9fa;
+            padding: 25px;
+            margin: 0;
+            border-bottom: 1px solid #e8f4f8;
+        }
+
+        .data-sources h3 {
+            color: #1a365d;
+            font-size: 1.3em;
+            margin-bottom: 15px;
+            text-align: center;
+            font-weight: 600;
+        }
+
+        .sources-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+        .source-item {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(70, 130, 180, 0.1);
+            border-left: 4px solid #4682b4;
+            text-decoration: none;
+            color: inherit;
+            display: block;
+            transition: all 0.3s ease;
+        }
+
+        .source-item:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(70, 130, 180, 0.2);
+            border-left-color: #1a365d;
+        }
+
+        .source-name {
+            font-weight: 600;
+            color: #1a365d;
+            margin-bottom: 5px;
+        }
+
+        .source-role {
+            color: #4682b4;
+            font-weight: 500;
+        }
+
+        .summary-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            padding: 30px;
+            background: linear-gradient(135deg, #4682b4, #5f9ea0);
+            color: white;
+        }
+
+        .stat-item {
+            text-align: center;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            backdrop-filter: blur(10px);
+        }
+
+        .stat-number {
+            font-size: 2.2em;
+            font-weight: bold;
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .stat-label {
+            font-size: 0.95em;
+            opacity: 0.9;
+            line-height: 1.3;
+        }
+
+        .navigation-section {
+            padding: 40px 30px;
+            background: white;
+        }
+
+        .navigation-title {
+            text-align: center;
+            color: #1a365d;
+            font-size: 1.5em;
+            font-weight: 600;
+            margin-bottom: 30px;
+            line-height: 1.4;
+        }
+
+        .button-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .nav-button {
+            background: linear-gradient(135deg, #4682b4, #5f9ea0);
+            color: white;
+            border: 3px solid #2c5282;
+            padding: 25px 20px;
+            border-radius: 15px;
+            font-size: 1.1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 6px 20px rgba(70, 130, 180, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+            text-align: center;
+            text-decoration: none;
+            display: block;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .nav-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .nav-button:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 30px rgba(70, 130, 180, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.3);
+            background: linear-gradient(135deg, #5f9ea0, #4682b4);
+            border-color: #1a365d;
+        }
+
+        .nav-button:hover::before {
+            left: 100%;
+        }
+
+        .nav-button:active {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(70, 130, 180, 0.4), inset 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .button-subtitle {
+            font-size: 0.9em;
+            opacity: 0.9;
+            margin-top: 8px;
+            font-weight: 400;
+        }
+
+        .overview-stats {
+            background: #f8f9fa;
+            padding: 25px;
+            margin: 20px 30px;
+            border-radius: 10px;
+            border: 1px solid #e8f4f8;
+        }
+
+        .overview-title {
+            color: #1a365d;
+            font-size: 1.4em;
+            font-weight: 600;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .breakdown-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+        }
+
+        .breakdown-item {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+            box-shadow: 0 2px 8px rgba(70, 130, 180, 0.1);
+        }
+
+        .breakdown-number {
+            font-size: 1.8em;
+            font-weight: bold;
+            color: #4682b4;
+            display: block;
+        }
+
+        .breakdown-label {
+            font-size: 0.9em;
+            color: #666;
+            margin-top: 5px;
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2.2em;
+            }
+            
+            .summary-stats {
+                grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+                gap: 15px;
+                padding: 25px 20px;
+            }
+            
+            .stat-number {
+                font-size: 1.8em;
+            }
+            
+            .button-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+            
+            .navigation-section {
+                padding: 30px 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Current State Core Function Comparison Matrix</h1>
+            <h2 class="subtitle">Intergy VS Canvas Health</h2>
+            <p class="author">Created by: Suleiry Matos - Biz Con Ed - EMR Transformation Specialist</p>
+        </div>
+
+        <div class="overview-stats">
+            <h3 class="overview-title">Assessment Breakdown by Department</h3>
+            <div class="breakdown-grid">
+                <div class="breakdown-item">
+                    <span class="breakdown-number">48</span>
+                    <div class="breakdown-label">Jessica: RCM Functions</div>
+                </div>
+                <div class="breakdown-item">
+                    <span class="breakdown-number">18</span>
+                    <div class="breakdown-label">Katie: Patient Access & ONC Compliance</div>
+                </div>
+                <div class="breakdown-item">
+                    <span class="breakdown-number">28</span>
+                    <div class="breakdown-label">Jennifer: Front Office Clinical Support</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="summary-stats">
+            <div class="stat-item">
+                <span class="stat-number">94</span>
+                <span class="stat-label">Total Core Functions Analyzed</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-number">100%</span>
+                <span class="stat-label">Intergy Functionality Coverage</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-number">66</span>
+                <span class="stat-label">Canvas Functional Gaps Identified</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-number">70%</span>
+                <span class="stat-label">Overall Functionality Gap Rate</span>
+            </div>
+        </div>
+
+        <div class="navigation-section">
+            <h2 class="navigation-title">Click The Buttons Below to go to Matrix to view the Detailed Function Analysis</h2>
+            <div class="button-grid">
+                <a href="https://bizconed.github.io/Praxis-Health/canvas-vs-intergy-rcm-comparison-jessica-reagan.html" class="nav-button">
+                    RCM Core Function Matrix
+                    <div class="button-subtitle">Revenue Cycle Management • 48 Functions</div>
+                </a>
+                <a href="https://bizconed.github.io/Praxis-Health/front-office-comparison.html" class="nav-button">
+                    Front End Core Function Matrix
+                    <div class="button-subtitle">Front Office & Clinical Support • 28 Functions</div>
+                </a>
+                <a href="https://bizconed.github.io/Praxis-Health/patient-access-matrix.html" class="nav-button">
+                    Patient Access and Compliance Functional Matrix
+                    <div class="button-subtitle">Patient Access & ONC Compliance • 18 Functions</div>
+                </a>
+            </div>
+        </div>
+
+        <div class="data-sources">
+            <h3>Data Sources</h3>
+            <div class="sources-grid">
+                <a href="https://adaugeohealth-my.sharepoint.com/:w:/r/personal/kawhite_gopxh_com/Documents/Canvas%20.%20Barriers%20.%20Medical%20Office%20Support%20%20(1).docx?d=w52ea01b0bfa1466baac78af6dbe5d096&csf=1&web=1&e=HltUAo" class="source-item" target="_blank">
+                    <div class="source-name">Katie White</div>
+                    <div class="source-role">Patient Access & ONC Compliance</div>
+                </a>
+                <a href="https://adaugeohealth-my.sharepoint.com/:x:/g/personal/jkperry_gopxh_com/EQcnDRNl9G1Jn8gyPDpijvwB7xvtXPf-cAq3DNf7uSEC2w?e=96gfQv" class="source-item" target="_blank">
+                    <div class="source-name">Jennifer Perry</div>
+                    <div class="source-role">Front Office & Clinical Support</div>
+                </a>
+                <a href="https://adaugeohealth-my.sharepoint.com/:x:/g/personal/v-ssmatos_gopxh_com/ESoeviIibjdIqDJQrQ2eIWYB0Wj9XDP5xi5_ZUzs-L-2vw?e=QHiv8Y" class="source-item" target="_blank">
+                    <div class="source-name">Jessica Reagan</div>
+                    <div class="source-role">RCM - Revenue Cycle Management</div>
+                </a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
