@@ -1,0 +1,591 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EMR Comparison Matrix - RXM Workflow</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: white;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(70, 130, 180, 0.15);
+            overflow: hidden;
+            border: 1px solid #e8f4f8;
+        }
+
+        .header {
+            background: white;
+            color: #2c5282;
+            padding: 30px;
+            text-align: center;
+            border-bottom: 2px solid #e8f4f8;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            font-weight: bold;
+            color: #1a365d;
+        }
+
+        .header p {
+            font-size: 1.1em;
+            opacity: 0.9;
+        }
+
+        .matrix-container {
+            padding: 0;
+            overflow-x: auto;
+        }
+
+        .matrix-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 14px;
+        }
+
+        .matrix-table th {
+            background: #1a365d;
+            color: white;
+            padding: 20px 15px;
+            text-align: center;
+            font-weight: 600;
+            font-size: 1.1em;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        .matrix-table th:first-child {
+            text-align: center;
+            width: 60%;
+        }
+
+        .matrix-table th:nth-child(2) {
+            background: #1a365d;
+            width: 20%;
+        }
+
+        .matrix-table th:nth-child(3) {
+            background: #1a365d;
+            width: 20%;
+        }
+
+        .matrix-table td {
+            padding: 12px;
+            border-bottom: 1px solid #ecf0f1;
+            vertical-align: middle;
+        }
+
+        .matrix-table tr:nth-child(even) {
+            background-color: #f8f9fa;
+        }
+
+        .matrix-table tr:hover {
+            background-color: #f0f8ff;
+            transform: scale(1.01);
+            transition: all 0.2s ease;
+        }
+
+        .functionality-cell {
+            font-weight: 500;
+            color: #2c3e50;
+            line-height: 1.4;
+            text-align: left;
+            font-size: 13px;
+        }
+
+        .status-cell {
+            text-align: center;
+            font-weight: 600;
+            font-size: 12px;
+        }
+
+        .checkmark {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            color: white;
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        .checkmark.yes {
+            background: linear-gradient(135deg, #4682b4, #5f9ea0);
+            animation: pulse-blue 2s infinite;
+        }
+
+        .checkmark.no {
+            background: linear-gradient(135deg, #e53e3e, #c53030);
+            animation: pulse-red 2s infinite;
+        }
+
+        .checkmark.partial {
+            background: linear-gradient(135deg, #f39c12, #e67e22);
+            animation: pulse-orange 2s infinite;
+        }
+
+        .checkmark.unknown {
+            background: linear-gradient(135deg, #6c757d, #495057);
+            animation: pulse-gray 2s infinite;
+        }
+
+        @keyframes pulse-blue {
+            0% { box-shadow: 0 0 0 0 rgba(70, 130, 180, 0.7); }
+            70% { box-shadow: 0 0 0 10px rgba(70, 130, 180, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(70, 130, 180, 0); }
+        }
+
+        @keyframes pulse-red {
+            0% { box-shadow: 0 0 0 0 rgba(229, 62, 62, 0.7); }
+            70% { box-shadow: 0 0 0 10px rgba(229, 62, 62, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(229, 62, 62, 0); }
+        }
+
+        @keyframes pulse-orange {
+            0% { box-shadow: 0 0 0 0 rgba(243, 156, 18, 0.7); }
+            70% { box-shadow: 0 0 0 10px rgba(243, 156, 18, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(243, 156, 18, 0); }
+        }
+
+        @keyframes pulse-gray {
+            0% { box-shadow: 0 0 0 0 rgba(108, 117, 125, 0.7); }
+            70% { box-shadow: 0 0 0 10px rgba(108, 117, 125, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(108, 117, 125, 0); }
+        }
+
+        .department-header {
+            background: #2d5a87 !important;
+            color: white;
+            font-size: 1.1em;
+            text-align: center;
+            font-weight: 700;
+            padding: 15px;
+        }
+
+        .legend {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            padding: 20px;
+            background: #f8f9fa;
+            margin-top: 0;
+            flex-wrap: wrap;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 500;
+        }
+
+        .summary-stats {
+            display: flex;
+            justify-content: space-around;
+            padding: 25px;
+            background: linear-gradient(135deg, #4682b4, #5f9ea0);
+            color: white;
+            flex-wrap: wrap;
+        }
+
+        .stat-item {
+            text-align: center;
+            margin: 5px;
+        }
+
+        .stat-number {
+            font-size: 2em;
+            font-weight: bold;
+            display: block;
+        }
+
+        .stat-label {
+            font-size: 0.9em;
+            opacity: 0.8;
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 1.8em;
+            }
+            
+            .matrix-table {
+                font-size: 12px;
+            }
+            
+            .functionality-cell {
+                font-size: 11px;
+            }
+            
+            .legend {
+                flex-direction: column;
+                align-items: center;
+                gap: 15px;
+            }
+            
+            .summary-stats {
+                flex-direction: column;
+                gap: 15px;
+            }
+        }
+
+        .canvas-details {
+            font-size: 10px;
+            color: #666;
+            font-style: italic;
+            margin-top: 3px;
+            max-width: 200px;
+            word-wrap: break-word;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>EMR Comparison Matrix</h1>
+            <p>Intergy vs Canvas Health - RXM Workflow Assessment</p>
+            <p style="margin-top: 10px; font-size: 1em; font-weight: 500; opacity: 0.9;">
+                Comprehensive Revenue Cycle Management Functionality Analysis
+            </p>
+            <p style="margin-top: 10px; font-size: 1em; font-style: italic; opacity: 0.8;">
+                Created by: Suleiry Matos | Data provided by: Jessica Reagan
+            </p>
+        </div>
+
+        <div class="matrix-container">
+            <table class="matrix-table">
+                <thead>
+                    <tr>
+                        <th>Core Functionality</th>
+                        <th>Intergy</th>
+                        <th>Canvas Health</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <script>
+                        // Function to determine Canvas status
+                        function getCanvasStatus(canvasResponse) {
+                            const response = canvasResponse.toUpperCase();
+                            if (response === "YES") {
+                                return { class: "yes", symbol: "✓", details: "" };
+                            } else if (response === "NO" || response === "N/A") {
+                                return { class: "no", symbol: "✗", details: "" };
+                            } else if (response.includes("UNKNOWN") || response === "UNKOWN") {
+                                return { class: "unknown", symbol: "?", details: canvasResponse.length > 10 ? canvasResponse : "" };
+                            } else if (response.includes("NOT ADEQUATE") || response.includes("HOWEVER") || response.includes("PARTIAL") || response.includes("BUT")) {
+                                return { class: "partial", symbol: "◐", details: canvasResponse };
+                            } else if (response.length > 10 && !response.includes("NO")) {
+                                return { class: "partial", symbol: "◐", details: canvasResponse };
+                            } else {
+                                return { class: "no", symbol: "✗", details: "" };
+                            }
+                        }
+
+                        // Data from the Excel file
+                        const categories = [
+                            {
+                                name: "PRE BILLING - PATIENT DEMOGRAPHIC/COVERAGES/CONSENTS/COPAY & PRE-COLLECTS",
+                                functions: [
+                                    {
+                                        function: "View and Edit Patient Name, Mailing Address, DOB, SSN, Phone (Type) of Phone, Email, Consent, Insurance Information including subscriber, policy number, start and end dates of coverage, copay and deductible",
+                                        intergy: "yes",
+                                        canvas: "YES"
+                                    },
+                                    {
+                                        function: "Define WC related visits vs primary care. including referring provider information as needed.",
+                                        intergy: "yes",
+                                        canvas: "UNKOWN"
+                                    },
+                                    {
+                                        function: "View, Add and Edit ROI related to PHI",
+                                        intergy: "yes",
+                                        canvas: "NO"
+                                    },
+                                    {
+                                        function: "View of patient's insurance card (s), front and back",
+                                        intergy: "yes",
+                                        canvas: "YES"
+                                    },
+                                    {
+                                        function: "Schedule eligibility verification to run automatically including the ability to perform on demand as needed.",
+                                        intergy: "yes",
+                                        canvas: "YES-HOWEVER HAVE NOT SEEN IT LIVE, AND THEY STILL HAVE NOT ANSWERED MY QUESTION RELATED TO THE SETTING TO ACTIVATE."
+                                    },
+                                    {
+                                        function: "Collect co-pay or pre-collected payments at the time of service.",
+                                        intergy: "yes",
+                                        canvas: "NOT ADEQUATE"
+                                    },
+                                    {
+                                        function: "Refund overpaid amounts, transfer overpaid amounts to other charges.",
+                                        intergy: "yes",
+                                        canvas: "N/A"
+                                    }
+                                ]
+                            },
+                            {
+                                name: "PRE BILLING - CHARGE ENTRY AND ENCOUNTER RESOLUTION",
+                                functions: [
+                                    {
+                                        function: "View and edit details of charges associated with the visit encounter that have not yet \"posted\"",
+                                        intergy: "yes",
+                                        canvas: "NOT ADEQUATE"
+                                    },
+                                    {
+                                        function: "Modify details of pending charges including CPT Code selection, ailment/referral/prior authorization requirements. Service center, POS, Provider and Supervisor/Incident ToProvider, Modifiers, Units, Charge Amount, ICD-10, Payer/Responsibility",
+                                        intergy: "yes",
+                                        canvas: "YES, HOWEVER NECESSARY FUNCTIONS IN CANVAS DO NOT NECESSARILY REQUIRE ADVANCED CAPABILITIES AS THIS IS BELIEVED TO BE IN CANDID"
+                                    },
+                                    {
+                                        function: "Ability to assign pricing based on Marco selection or cash pay alternatives.",
+                                        intergy: "yes",
+                                        canvas: "NO/UNKNOWN"
+                                    },
+                                    {
+                                        function: "Ability to create a sliding fee discount.",
+                                        intergy: "yes",
+                                        canvas: "NO"
+                                    },
+                                    {
+                                        function: "Ability to calculate All Inclusive Encounter Rates based on the payer, procedure, provider and service location. This includes the amount billed to the payer and the patient.",
+                                        intergy: "yes",
+                                        canvas: "NO"
+                                    },
+                                    {
+                                        function: "Ability for encounters to be categorized as billable or non-billable. Using this criteria, the ability to quickly resolve those encounters that are categorized as billable and assign charges accordingly when missing. Reconciliation ability and tracking capabilities to ensure no charges are missed.",
+                                        intergy: "yes",
+                                        canvas: "NO"
+                                    },
+                                    {
+                                        function: "Ability to auto-post a no show fee as Self Pay based on Appointment status",
+                                        intergy: "yes",
+                                        canvas: "NO"
+                                    },
+                                    {
+                                        function: "Ability to post charges Flat Fee Charges. Charge Code or Name should be customizable, including the description and the type of charge such as a dispensed item like sunscreen vs an administrative fee like a NSF item",
+                                        intergy: "yes",
+                                        canvas: "NO"
+                                    }
+                                ]
+                            },
+                            {
+                                name: "POST BILLING - CLAIM CREATION AND SUBMISSION/REJECTION AND DENIAL MANAGEMENT/STATEMENT CREATION AND SUBMISSION",
+                                functions: [
+                                    {
+                                        function: "Ability to generate professional and institutional electronic and paper claim batches using the posted charges.",
+                                        intergy: "yes",
+                                        canvas: "YES, BUT HAVE NOT SEEN IT. THIS WILL RESIDE IN CANDID."
+                                    },
+                                    {
+                                        function: "Ability to review and edit batch prior to submission based on pre-bill analysis. This includes correcting and resolving any errors that may cause the claim to be denied or rejected.",
+                                        intergy: "yes",
+                                        canvas: "UNKNOWN, BUT WOULD RESIDE IN CANDID"
+                                    },
+                                    {
+                                        function: "Ability to hold certain claims while allowing the rest of the batch to be submitted.",
+                                        intergy: "yes",
+                                        canvas: "UNKNOWN, BUT WOULD RESIDE IN CANDID"
+                                    },
+                                    {
+                                        function: "Ability to generate, and schedule a batch of statements to be sent as an electronic file to a vendor based on aging criteria. This includes the ability to review and edit the statement batch prior to submitting the file to the electronic vendor. Less Common, however the ability to generate and print a batch of statements is also necessary in the event the electronic vendor is unavailable.",
+                                        intergy: "yes",
+                                        canvas: "UNKNOWN, BUT WOULD RESIDE IN CANDID"
+                                    },
+                                    {
+                                        function: "Ability to define ANSI denial codes on insurance remittance as workable or non-workable. Workable denials would enter a queue to be reviewed for rebill, whereas non-workable denials would be closed.",
+                                        intergy: "yes",
+                                        canvas: "UNKNOWN, BUT WOULD RESIDE IN CANDID"
+                                    },
+                                    {
+                                        function: "Ability to review claims rejection reasons from clearinghouse and/or payer, make corrections, and resubmit.",
+                                        intergy: "yes",
+                                        canvas: "UNKNOWN, BUT WOULD RESIDE IN CANDID"
+                                    }
+                                ]
+                            },
+                            {
+                                name: "POST BILLING - INSURANCE AND PATIENT PAYMENT POSTING/AR MANAGEMENT",
+                                functions: [
+                                    {
+                                        function: "Ability to flag at-risk claims for review.",
+                                        intergy: "yes",
+                                        canvas: "NO"
+                                    },
+                                    {
+                                        function: "Ability to assign review, flag and work past due insurance claims based on date billed/accepted and missing adjudication response from payer. Ability to review, assign, flag and work past due balances based on lack of payment/communication from patient. Manual and Auto assignment capability along with automatic functions assigned to specific user actions.",
+                                        intergy: "yes",
+                                        canvas: "NO"
+                                    },
+                                    {
+                                        function: "Ability to perform mass write off of outstanding balances based on lack of payment (typically for the purpose of reporting to collection agency).",
+                                        intergy: "yes",
+                                        canvas: "NO"
+                                    }
+                                ]
+                            },
+                            {
+                                name: "MISC FUNCTIONS",
+                                functions: [
+                                    {
+                                        function: "Ability to access, manage, and work tasks and notifications. A task or notification in the system is a particular duty or function that you can perform either within the software or outside of the software. Working a task is the performance of an action or series of actions necessary to complete an assigned task.",
+                                        intergy: "yes",
+                                        canvas: "NO"
+                                    },
+                                    {
+                                        function: "Automatically created and assigned through defined criteria.",
+                                        intergy: "yes",
+                                        canvas: "NO"
+                                    },
+                                    {
+                                        function: "Manually created and assigned by individual users on an as needed basis.",
+                                        intergy: "yes",
+                                        canvas: "NO"
+                                    },
+                                    {
+                                        function: "Ability to have task types that are specific to claim, patient account, or charge details.",
+                                        intergy: "yes",
+                                        canvas: "NO"
+                                    },
+                                    {
+                                        function: "Ability to access and manage tasks that have not been reviewed or worked",
+                                        intergy: "yes",
+                                        canvas: "NO"
+                                    }
+                                ]
+                            },
+                            {
+                                name: "REPORTING FUNCTION",
+                                functions: [
+                                    {
+                                        function: "Report that summarizes charges, adjustments, receipts and refunds for a given period of time, this type of report would be used to ensure that the integrity of the daily and period close have been intact.",
+                                        intergy: "yes",
+                                        canvas: "NO"
+                                    },
+                                    {
+                                        function: "All other reports are done via Power BI and can be queried using mySQL",
+                                        intergy: "Yes",
+                                        canvas: "they said it could be done but we have not see this yet in action this is partical"
+                                    }
+                                ]
+                            },
+                            {
+                                name: "SYSTEM AND FINANCIAL INTEGRITY",
+                                functions: [
+                                    {
+                                        function: "Process to protect and seal the financial information at the end of a day. Ability to reconcile with a report to ensure that the integrity of the data matches.",
+                                        intergy: "yes",
+                                        canvas: "NO"
+                                    },
+                                    {
+                                        function: "Process to protect the integrity of any financial transaction and ensure that when a close is performed there is no chance of an open item being worked on.",
+                                        intergy: "yes",
+                                        canvas: "NO"
+                                    }
+                                ]
+                            }
+                        ];
+
+                        // Generate the table rows
+                        let tableHTML = '';
+                        
+                        categories.forEach(category => {
+                            // Add category header
+                            tableHTML += `
+                                <tr>
+                                    <td colspan="3" class="department-header">${category.name}</td>
+                                </tr>
+                            `;
+                            
+                            // Add functions under this category
+                            category.functions.forEach(func => {
+                                const integyStatus = func.intergy.toLowerCase() === 'yes' ? 'yes' : 'no';
+                                const canvasStatus = getCanvasStatus(func.canvas);
+                                
+                                tableHTML += `
+                                    <tr>
+                                        <td class="functionality-cell">${func.function}</td>
+                                        <td class="status-cell">
+                                            <span class="checkmark ${integyStatus}">${integyStatus === 'yes' ? '✓' : '✗'}</span>
+                                        </td>
+                                        <td class="status-cell">
+                                            <span class="checkmark ${canvasStatus.class}">${canvasStatus.symbol}</span>
+                                            ${canvasStatus.details ? `<div class="canvas-details">${canvasStatus.details}</div>` : ''}
+                                        </td>
+                                    </tr>
+                                `;
+                            });
+                        });
+                        
+                        document.write(tableHTML);
+                    </script>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="legend">
+            <div class="legend-item">
+                <span class="checkmark yes">✓</span>
+                <span>Checkmark: Fully Supported</span>
+            </div>
+            <div class="legend-item">
+                <span class="checkmark partial">◐</span>
+                <span>Circle: Partially Supported/Not Adequate</span>
+            </div>
+            <div class="legend-item">
+                <span class="checkmark unknown">?</span>
+                <span>Question: Unknown Status</span>
+            </div>
+            <div class="legend-item">
+                <span class="checkmark no">✗</span>
+                <span>X: Not Supported</span>
+            </div>
+        </div>
+
+        <div class="summary-stats">
+            <div class="stat-item">
+                <span class="stat-number">48</span>
+                <span class="stat-label">Total Functions Assessed</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-number">3</span>
+                <span class="stat-label">Canvas Full Support</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-number">11</span>
+                <span class="stat-label">Canvas Partial Support</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-number">9</span>
+                <span class="stat-label">Canvas Unknown</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-number">25</span>
+                <span class="stat-label">Canvas Gaps Identified</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-number">94%</span>
+                <span class="stat-label">Functionality Gap Rate</span>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
