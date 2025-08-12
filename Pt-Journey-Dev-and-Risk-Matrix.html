@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Praxis Health – Patient Journey Development & Risk Matrix</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: white;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(70, 130, 180, 0.15);
+            overflow: hidden;
+            border: 1px solid #e8f4f8;
+        }
+
+        .header {
+            background: white;
+            color: #2c5282;
+            padding: 30px;
+            text-align: center;
+            border-bottom: 2px solid #e8f4f8;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            font-weight: bold;
+            color: #1a365d;
+        }
+
+        .header p {
+            font-size: 1.1em;
+            opacity: 0.9;
+        }
+
+        .matrix-container {
+            padding: 0;
+            overflow-x: auto;
+        }
+
+        .matrix-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 16px;
+        }
+
+        .matrix-table th {
+            background: #1a365d;
+            color: white;
+            padding: 20px 15px;
+            text-align: center;
+            font-weight: 600;
+            font-size: 1.1em;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        .matrix-table th:first-child {
+            text-align: center;
+            width: 25%;
+        }
+
+        .matrix-table th:nth-child(2) {
+            background: #1a365d;
+            width: 25%;
+        }
+
+        .matrix-table th:nth-child(3) {
+            background: #1a365d;
+            width: 7%;
+        }
+
+        .matrix-table th:nth-child(4) {
+            background: #1a365d;
+            width: 23%;
+        }
+
+        .matrix-table th:nth-child(5) {
+            background: #1a365d;
+            width: 20%;
+        }
+
+        .matrix-table td {
+            padding: 15px;
+            border-bottom: 1px solid #ecf0f1;
+            vertical-align: middle;
+        }
+
+        .matrix-table tr:nth-child(even) {
+            background-color: #f8f9fa;
+        }
+
+        .matrix-table tr:hover {
+            background-color: #f0f8ff;
+            transform: scale(1.01);
+            transition: all 0.2s ease;
+        }
+
+        .functionality-cell {
+            font-weight: 500;
+            color: #2c3e50;
+            line-height: 1.4;
+            text-align: left;
+            padding-left: 20px;
+        }
+
+        .capability-cell {
+            font-weight: 400;
+            color: #2c3e50;
+            line-height: 1.4;
+            text-align: left;
+            font-size: 14px;
+        }
+
+        .development-cell {
+            font-weight: 400;
+            color: #2c3e50;
+            line-height: 1.4;
+            text-align: left;
+            font-size: 14px;
+        }
+
+        .status-cell {
+            text-align: center;
+            font-weight: 600;
+        }
+
+        .checkmark {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            color: white;
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        .checkmark.yes {
+            background: linear-gradient(135deg, #4682b4, #5f9ea0);
+            animation: pulse-blue 2s infinite;
+        }
+
+        .checkmark.no {
+            background: linear-gradient(135deg, #e53e3e, #c53030);
+            animation: pulse-red 2s infinite;
+        }
+
+        .checkmark.partial {
+            background: linear-gradient(135deg, #f39c12, #e67e22);
+            animation: pulse-orange 2s infinite;
+        }
+
+        @keyframes pulse-blue {
+            0% { box-shadow: 0 0 0 0 rgba(70, 130, 180, 0.7); }
+            70% { box-shadow: 0 0 0 10px rgba(70, 130, 180, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(70, 130, 180, 0); }
+        }
+
+        @keyframes pulse-red {
+            0% { box-shadow: 0 0 0 0 rgba(229, 62, 62, 0.7); }
+            70% { box-shadow: 0 0 0 10px rgba(229, 62, 62, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(229, 62, 62, 0); }
+        }
+
+        @keyframes pulse-orange {
+            0% { box-shadow: 0 0 0 0 rgba(243, 156, 18, 0.7); }
+            70% { box-shadow: 0 0 0 10px rgba(243, 156, 18, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(243, 156, 18, 0); }
+        }
+
+        .department-header {
+            background: #2d5a87 !important;
+            color: white;
+            font-size: 1.2em;
+            text-align: center;
+            font-weight: 700;
+        }
+
+        .legend {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            padding: 20px;
+            background: #f8f9fa;
+            margin-top: 0;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 500;
+        }
+
+        .summary-stats {
+            display: flex;
+            justify-content: space-around;
+            padding: 25px;
+            background: linear-gradient(135deg, #4682b4, #5f9ea0);
+            color: white;
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 2em;
+            font-weight: bold;
+            display: block;
+        }
+
+        .stat-label {
+            font-size: 0.9em;
+            opacity: 0.8;
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 1.8em;
+            }
+            
+            .matrix-table {
+                font-size: 14px;
+            }
+            
+            .legend {
+                flex-direction: column;
+                align-items: center;
+                gap: 15px;
+            }
+            
+            .summary-stats {
+                flex-direction: column;
+                gap: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Praxis Health – Patient Journey Development & Risk Matrix</h1>
+            <p>Created by Suleiry matos</p>
+        </div>
+
+        <div class="matrix-container">
+            <table class="matrix-table">
+                <thead>
+                    <tr>
+                        <th>Journey Step</th>
+                        <th>Canvas Capability Today</th>
+                        <th>Needs Dev</th>
+                        <th>Care/Risk Impact</th>
+                        <th>Dev Notes</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="functionality-cell">Initial Contact & Appointment Scheduling</td>
+                        <td class="capability-cell">Portal scheduling exists but is disabled; lacks scheduling rule enforcement.</td>
+                        <td class="status-cell"><span class="checkmark yes">✓</span></td>
+                        <td class="development-cell">Increased scheduling errors; reduced access convenience for established patients.</td>
+                        <td class="development-cell">Enhance scheduling engine to enforce provider templates and rules. Needs Development to work</td>
+                    </tr>
+                    <tr>
+                        <td class="functionality-cell">Pre-Registration & Forms</td>
+                        <td class="capability-cell">No automated pre-registration form delivery; no digital consent capture integrated.</td>
+                        <td class="status-cell"><span class="checkmark yes">✓</span></td>
+                        <td class="development-cell">Delays in care start; risk of data entry errors from manual transcription.</td>
+                        <td class="development-cell">Digital pre-registration and consent forms with direct EHR integration.</td>
+                    </tr>
+                    <tr>
+                        <td class="functionality-cell">Check-In & Status Updates</td>
+                        <td class="capability-cell">Basic banner for status change exists.</td>
+                        <td class="status-cell"><span class="checkmark yes">✓</span></td>
+                        <td class="development-cell">Patient frustration, reduced transparency, increased calls to front desk.</td>
+                        <td class="development-cell">Currently what the person at the front end does will be attached to the visit encounter note which can lend it self to many issues it would need dev work to seperate this</td>
+                    </tr>
+                    <tr>
+                        <td class="functionality-cell">Clinical Encounter & Orders</td>
+                        <td class="capability-cell">Order entry exists; referral workflow delays note sign-off until marked 'sent'.</td>
+                        <td class="status-cell"><span class="checkmark yes">✓</span></td>
+                        <td class="development-cell">Delays in billing and care coordination; potential for missed follow-up actions.</td>
+                        <td class="development-cell">Decouple referral send from note sign-off; enhance order tracking filters.</td>
+                    </tr>
+                    <tr>
+                        <td class="functionality-cell">Prior Authorizations & Follow-Up Scheduling</td>
+                        <td class="capability-cell">No integrated prior auth; manual tracking.</td>
+                        <td class="status-cell"><span class="checkmark yes">✓</span></td>
+                        <td class="development-cell">Treatment delays; patient dissatisfaction from prolonged approval times.</td>
+                        <td class="development-cell">Prior auth management module; link to scheduling and patient notifications.</td>
+                    </tr>
+                    <tr>
+                        <td class="functionality-cell">Payment Collection</td>
+                        <td class="capability-cell">Not integrated with RCM (Candid) yet.</td>
+                        <td class="status-cell"><span class="checkmark yes">✓</span></td>
+                        <td class="development-cell">Surprise billing; delayed collections impacting revenue cycle health.</td>
+                        <td class="development-cell">Complete Candid integration for real-time payment posting.</td>
+                    </tr>
+                    <tr>
+                        <td class="functionality-cell">Billing & Claims</td>
+                        <td class="capability-cell">Claims workflow tied to note completion; partial workaround with labels.</td>
+                        <td class="status-cell"><span class="checkmark yes">✓</span></td>
+                        <td class="development-cell">Delayed reimbursement; compliance risks from incorrect coding.</td>
+                        <td class="development-cell">Fix queue automation rules (if/then logic); standardize visit type coding; enforce protocols for billable vs non-billable; clear definitions and governance for queue usage.</td>
+                    </tr>
+                    <tr>
+                        <td class="functionality-cell">Billing Workflow Governance</td>
+                        <td class="capability-cell">No built-in enforcement of standardized workflows or documentation requirements.</td>
+                        <td class="status-cell"><span class="checkmark yes">✓</span></td>
+                        <td class="development-cell">Audit risk; inaccurate coding; operational inefficiency.</td>
+                        <td class="development-cell">Implement governance policies with system-enforced protocols; lock down who can modify claim-related fields; require chief complaint in patient's own words.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="legend">
+            <div class="legend-item">
+                <span class="checkmark yes">✓</span>
+                <span>Checkmark: Development Needed</span>
+            </div>
+            <div class="legend-item">
+                <span class="checkmark no">✗</span>
+                <span>X: No Development Needed</span>
+            </div>
+        </div>
+
+    </div>
+</body>
+</html>
