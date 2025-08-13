@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Canvas Medical - Readiness Assessment</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .dashboard {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.2em;
+            font-weight: 300;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            font-size: 1.1em;
+            opacity: 0.9;
+        }
+
+        .content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            padding: 30px;
+        }
+
+        .readiness-key {
+            background: #f8f9ff;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+            grid-column: 1 / -1;
+        }
+
+        .readiness-key h3 {
+            margin-bottom: 15px;
+            color: #333;
+            font-size: 1.2em;
+        }
+
+        .key-items {
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .key-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 500;
+        }
+
+        .color-dot {
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+        }
+
+        .green { background-color: #27ae60; }
+        .yellow { background-color: #f39c12; }
+        .red { background-color: #e74c3c; }
+
+        .chart-section {
+            background: white;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+
+        .chart-title {
+            font-size: 1.3em;
+            font-weight: 600;
+            margin-bottom: 20px;
+            color: #333;
+            text-align: center;
+        }
+
+        .pie-container {
+            text-align: center;
+            position: relative;
+        }
+
+        .pie-chart {
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            background: conic-gradient(
+                #27ae60 0% 15%,
+                #f39c12 15% 50%, 
+                #e74c3c 50% 100%
+            );
+            margin: 0 auto 20px;
+            position: relative;
+        }
+
+        .pie-center {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 120px;
+            height: 120px;
+            background: white;
+            border-radius: 50%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .category-bars {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .category-row {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .category-label {
+            min-width: 120px;
+            font-size: 0.9em;
+            font-weight: 500;
+            color: #555;
+        }
+
+        .bar-container {
+            flex: 1;
+            height: 24px;
+            background: #f0f0f0;
+            border-radius: 12px;
+            overflow: hidden;
+            display: flex;
+        }
+
+        .bar-segment {
+            height: 100%;
+            transition: all 0.3s ease;
+        }
+
+        .status-indicator {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            margin-left: 10px;
+        }
+
+        .risks-recommendations {
+            grid-column: 1 / -1;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-top: 20px;
+        }
+
+        .risks, .recommendations {
+            background: white;
+            border-radius: 8px;
+            padding: 25px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+
+        .section-title {
+            font-size: 1.3em;
+            font-weight: 600;
+            margin-bottom: 20px;
+            color: #333;
+            border-bottom: 2px solid #667eea;
+            padding-bottom: 10px;
+        }
+
+        .risk-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 0;
+            border-bottom: 1px solid #eee;
+        }
+
+        .risk-item:last-child {
+            border-bottom: none;
+        }
+
+        .risk-level {
+            font-weight: bold;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.85em;
+        }
+
+        .risk-high {
+            background: #fee;
+            color: #e74c3c;
+        }
+
+        .risk-medium {
+            background: #fff4e6;
+            color: #f39c12;
+        }
+
+        .recommendations ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .recommendations li {
+            padding: 12px 0;
+            border-bottom: 1px solid #eee;
+            position: relative;
+            padding-left: 20px;
+        }
+
+        .recommendations li:before {
+            content: "→";
+            position: absolute;
+            left: 0;
+            color: #667eea;
+            font-weight: bold;
+        }
+
+        .recommendations li:last-child {
+            border-bottom: none;
+        }
+
+        .button-container {
+            grid-column: 1 / -1; 
+            display: flex; 
+            justify-content: center; 
+            gap: 20px; 
+            margin-top: 30px; 
+            padding-top: 20px; 
+            border-top: 1px solid #eee;
+            flex-wrap: wrap;
+        }
+
+        .dashboard-button {
+            display: inline-block; 
+            color: white; 
+            text-decoration: none; 
+            padding: 15px 30px; 
+            border-radius: 8px; 
+            font-weight: 600; 
+            font-size: 1.1em; 
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3); 
+            transition: all 0.3s ease;
+        }
+
+        .dashboard-button:hover {
+            transform: translateY(-2px); 
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        .button-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+
+        .button-secondary {
+            background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+        }
+
+        @media (max-width: 768px) {
+            .content {
+                grid-template-columns: 1fr;
+            }
+            
+            .risks-recommendations {
+                grid-template-columns: 1fr;
+            }
+            
+            .key-items {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .button-container {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .dashboard-button {
+                width: 100%;
+                max-width: 300px;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard">
+        <div class="header">
+            <h1>Canvas Medical – Gap-to-Core Readiness Assessment</h1>
+            <p>Enterprise EMR Platform Evaluation for Praxis Health</p>
+        </div>
+
+        <div class="content">
+            <div class="readiness-key">
+                <h3>Readiness Framework</h3>
+                <div class="key-items">
+                    <div class="key-item">
+                        <div class="color-dot green"></div>
+                        <span>Ready Now (15%)</span>
+                    </div>
+                    <div class="key-item">
+                        <div class="color-dot yellow"></div>
+                        <span>Partial (35%)</span>
+                    </div>
+                    <div class="key-item">
+                        <div class="color-dot red"></div>
+                        <span>Gap / Needs Development (50%)</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="chart-section">
+                <div class="chart-title">Overall Readiness</div>
+                <div class="pie-container">
+                    <div class="pie-chart">
+                        <div class="pie-center">
+                            <div style="font-size: 1.4em; color: #e74c3c;">50%</div>
+                            <div style="font-size: 0.9em; color: #666;">Gaps</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="chart-section">
+                <div class="chart-title">Capability Readiness by Category</div>
+                <div class="category-bars">
+                    <div class="category-row">
+                        <div class="category-label">Patient Intake</div>
+                        <div class="bar-container">
+                            <div class="bar-segment red" style="width: 100%;"></div>
+                        </div>
+                        <div class="status-indicator red"></div>
+                    </div>
+                    <div class="category-row">
+                        <div class="category-label">Scheduling</div>
+                        <div class="bar-container">
+                            <div class="bar-segment yellow" style="width: 100%;"></div>
+                        </div>
+                        <div class="status-indicator yellow"></div>
+                    </div>
+                    <div class="category-row">
+                        <div class="category-label">Clinical</div>
+                        <div class="bar-container">
+                            <div class="bar-segment red" style="width: 50%;"></div>
+                            <div class="bar-segment yellow" style="width: 50%;"></div>
+                        </div>
+                        <div class="status-indicator red"></div>
+                    </div>
+                    <div class="category-row">
+                        <div class="category-label">Orders</div>
+                        <div class="bar-container">
+                            <div class="bar-segment yellow" style="width: 100%;"></div>
+                        </div>
+                        <div class="status-indicator yellow"></div>
+                    </div>
+                    <div class="category-row">
+                        <div class="category-label">Population Health</div>
+                        <div class="bar-container">
+                            <div class="bar-segment red" style="width: 100%;"></div>
+                        </div>
+                        <div class="status-indicator red"></div>
+                    </div>
+                    <div class="category-row">
+                        <div class="category-label">Billing</div>
+                        <div class="bar-container">
+                            <div class="bar-segment red" style="width: 100%;"></div>
+                        </div>
+                        <div class="status-indicator red"></div>
+                    </div>
+                    <div class="category-row">
+                        <div class="category-label">Documents</div>
+                        <div class="bar-container">
+                            <div class="bar-segment red" style="width: 100%;"></div>
+                        </div>
+                        <div class="status-indicator red"></div>
+                    </div>
+                    <div class="category-row">
+                        <div class="category-label">Alerts</div>
+                        <div class="bar-container">
+                            <div class="bar-segment green" style="width: 100%;"></div>
+                        </div>
+                        <div class="status-indicator green"></div>
+                    </div>
+                    <div class="category-row">
+                        <div class="category-label">Reporting</div>
+                        <div class="bar-container">
+                            <div class="bar-segment yellow" style="width: 100%;"></div>
+                        </div>
+                        <div class="status-indicator yellow"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="risks-recommendations">
+                <div class="risks">
+                    <div class="section-title">Key Risk Areas</div>
+                    <div class="risk-item">
+                        <span>Operational Readiness</span>
+                        <span class="risk-level risk-high">HIGH</span>
+                    </div>
+                    <div class="risk-item">
+                        <span>Compliance</span>
+                        <span class="risk-level risk-high">HIGH</span>
+                    </div>
+                    <div class="risk-item">
+                        <span>Adoption</span>
+                        <span class="risk-level risk-high">HIGH</span>
+                    </div>
+                    <div class="risk-item">
+                        <span>Financial</span>
+                        <span class="risk-level risk-medium">MEDIUM-HIGH</span>
+                    </div>
+                </div>
+
+                <div class="recommendations">
+                    <div class="section-title">Immediate Actions</div>
+                    <ul>
+                        <li>Close Red gaps in 90-day development sprint</li>
+                        <li>Parallel vendor comparison for leverage</li>
+                        <li>Contract milestones tied to readiness</li>
+                        <li>Delay enterprise rollout until ≥90% ready</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="button-container">
+                <a href="https://bizconed.github.io/Praxis-Health/Pt-Journey-Dev-and-Risk-Matrix-v2.html" target="_blank" 
+                   class="dashboard-button button-secondary">
+                    🔄 Pt Journey Risk Matrix
+                </a>
+                <a href="https://adaugeohealth-my.sharepoint.com/:w:/g/personal/v-ssmatos_gopxh_com/EaCanuFEfhpLiRk0sl2erY4BeAaaw0d_B04dsQs89fEA0A?e=sjY1d7" target="_blank" 
+                   class="dashboard-button button-primary">
+                    📋 View Full Detailed Assessment Report
+                </a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
