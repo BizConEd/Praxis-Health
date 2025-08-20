@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 0; padding: 0; background-color: #f8f9fa; }
+        .header { background-color: #1e3a8a; color: white; padding: 25px; text-align: center; }
+        .header h1 { margin: 0; font-size: 28px; color: white; }
+        .header p { margin: 10px 0 0 0; font-size: 16px; color: white; }
+        .content { padding: 30px; background-color: white; margin: 0; }
+        table { width: 100%; border-collapse: collapse; margin: 20px 0; font-size: 13px; }
+        th, td { border: 1px solid #ddd; padding: 12px; text-align: left; vertical-align: top; }
+        th { background-color: #f5f5f5; font-weight: bold; color: #1e3a8a; }
+        .metriport { background-color: #fff3cd; }
+        .zus { background-color: #d1ecf1; }
+        .impact { background-color: #d4edda; }
+        .high-impact { color: #d32f2f; font-weight: bold; }
+        .critical { color: #c62828; font-weight: bold; }
+        .moderate { color: #f57c00; font-weight: bold; }
+        .summary { background-color: #f8f9fa; padding: 25px; margin: 30px 0; border-left: 4px solid #1e3a8a; }
+        .summary h2 { color: #1e3a8a; margin-top: 0; }
+        .summary h3 { color: #2c5aa0; margin-top: 20px; }
+        .links { background-color: #e3f2fd; padding: 25px; margin: 30px 0; border-radius: 8px; }
+        .links h2 { color: #1e3a8a; margin-top: 0; }
+        .links h3 { color: #2c5aa0; margin-top: 20px; margin-bottom: 10px; }
+        a { color: #1e3a8a; text-decoration: none; font-weight: 600; }
+        a:hover { text-decoration: underline; }
+        tr:nth-child(even) { background-color: #f9f9f9; }
+        tr:hover { background-color: #e3f2fd; }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Executive Comparison Matrix: Metriport vs Zus Health</h1>
+        <p><strong>Author: Suleiry Matos For Praxis Health</strong></p>
+    </div>
+    
+    <div class="content">
+        <table>
+            <tr>
+                <th style="width: 20%">Category</th>
+                <th class="metriport" style="width: 25%">Metriport (Current)</th>
+                <th class="zus" style="width: 25%">Zus Health (Alternative)</th>
+                <th class="impact" style="width: 30%">Impact/Executive Notes</th>
+            </tr>
+            <tr>
+                <td><strong>Integration with Canvas</strong></td>
+                <td>• Generic API integration<br>• Standard FHIR/EHR connectivity<br>• No Canvas-specific optimization<br>• Requires custom development effort</td>
+                <td>• <strong>Strategic product partnership with Canvas</strong><br>• Bidirectional integration via Canvas Contributor Program<br>• Direct medication reconciliation in Canvas interface<br>• Native workflow integration planned</td>
+                <td><span class="high-impact">HIGH IMPACT</span>: Zus has direct Canvas partnership enabling seamless integration vs. Metriport's generic approach. (Source: Canvas Medical Partnership)</td>
+            </tr>
+            <tr>
+                <td><strong>Data Refresh & Accuracy</strong></td>
+                <td>• Standard batch processing<br>• Manual refresh requests<br>• Limited real-time capabilities<br>• Inconsistent data quality</td>
+                <td>• <strong>Always-on ZAP (Zus Aggregated Profile)</strong><br>• Real-time ADT alerts and updates<br>• Automatic refresh engine<br>• Continuous data standardization and deduplication</td>
+                <td><span class="critical">CRITICAL</span>: Zus provides real-time updates vs. Metriport's batch approach. (Source: ZAP Documentation) Staff frustration with Metriport's delayed updates directly addressed.</td>
+            </tr>
+            <tr>
+                <td><strong>Medication Data Handling</strong></td>
+                <td>• Basic medication lists<br>• Manual reconciliation required<br>• Limited pharmacy network coverage<br>• No automated deduplication</td>
+                <td>• <strong>360-degree medication view</strong><br>• Coverage of 99% of US pharmacies via Surescripts<br>• Automated deduplication and reconciliation<br>• Dispensed vs. prescribed medication tracking</td>
+                <td><span class="high-impact">HIGH VALUE</span>: Zus covers 99% of pharmacies with automated reconciliation vs. Metriport's manual process. (Source: Canvas Partnership)</td>
+            </tr>
+            <tr>
+                <td><strong>Lab Data & Trending</strong></td>
+                <td>• Basic lab result retrieval<br>• Limited trending capabilities<br>• Manual interpretation required<br>• No predictive insights</td>
+                <td>• <strong>Comprehensive lab network via Quest Diagnostics</strong><br>• Historical trending and analysis<br>• AI-powered interpretation<br>• Automated result notifications</td>
+                <td><span class="moderate">MODERATE</span>: Zus provides enhanced lab analytics vs. Metriport's basic retrieval. (Source: ZAP Documentation)</td>
+            </tr>
+            <tr>
+                <td><strong>Conditions & HCC Capture</strong></td>
+                <td>• Standard condition lists<br>• Limited HCC coding support<br>• Manual chart review needed<br>• No risk stratification</td>
+                <td>• <strong>AI-powered condition identification</strong><br>• Hidden risk factor detection<br>• HCC coding optimization<br>• Risk stratification algorithms</td>
+                <td><span class="high-impact">HIGH REVENUE IMPACT</span>: Zus AI identifies missed HCC codes for revenue optimization vs. Metriport's basic approach. (Source: AI Insights)</td>
+            </tr>
+            <tr>
+                <td><strong>Reporting & Export (HEDIS, supplemental files)</strong></td>
+                <td>• Manual HEDIS reporting<br>• Limited export capabilities<br>• Staff-intensive processes<br>• Poor performance metrics</td>
+                <td>• <strong>Built-in HEDIS optimization</strong><br>• Data Mart with SQL-ready tables<br>• Automated Transitions of Care tracking<br>• 60%+ coverage for admission notifications</td>
+                <td><span class="high-impact">QUALITY IMPACT</span>: Zus improves HEDIS scores significantly vs. national average of 22-25%. (Source: HEDIS Helper, Data Mart)</td>
+            </tr>
+            <tr>
+                <td><strong>Provider-Facing Tools & Experience</strong></td>
+                <td>• Basic dashboard interface<br>• Limited clinical insights<br>• Manual workflow integration<br>• High cognitive load</td>
+                <td>• <strong>Generated Patient Summary (GPS)</strong><br>• AI-powered clinical summaries<br>• Embedded Canvas workflows<br>• User-friendly visualization</td>
+                <td><span class="high-impact">WORKFLOW EFFICIENCY</span>: Zus reduces provider prep time with AI summaries vs. Metriport's manual review burden. (Source: AI Insights)</td>
+            </tr>
+            <tr>
+                <td><strong>Care Gaps & Quality Programs</strong></td>
+                <td>• Basic alerts and notifications<br>• Limited care gap identification<br>• Manual quality tracking<br>• Reactive approach</td>
+                <td>• <strong>Proactive care gap identification</strong><br>• Real-time patient risk alerts<br>• Quality program automation<br>• Predictive analytics for intervention</td>
+                <td><span class="high-impact">POPULATION HEALTH</span>: Zus enables proactive population health management vs. Metriport's reactive alerts.</td>
+            </tr>
+            <tr>
+                <td><strong>Scalability & Roadmap</strong></td>
+                <td>• Open-source flexibility<br>• Community-driven development<br>• Uncertain commercial roadmap<br>• Limited enterprise features</td>
+                <td>• <strong>Enterprise-focused roadmap</strong><br>• Continuous AI/ML investment<br>• TEFCA preparation<br>• Scalable cloud infrastructure</td>
+                <td><span class="high-impact">STRATEGIC</span>: Zus has clear enterprise roadmap vs. Metriport's uncertain commercial direction. (Source: TEFCA Compliance)</td>
+            </tr>
+            <tr>
+                <td><strong>Compliance & Governance</strong></td>
+                <td>• Basic HIPAA compliance<br>• Limited audit capabilities<br>• Manual governance processes<br>• Generic security measures</td>
+                <td>• <strong>TEFCA-ready architecture</strong><br>• Automated data contribution compliance<br>• Robust audit trails<br>• Healthcare-specific governance</td>
+                <td><span class="critical">COMPLIANCE CRITICAL</span>: Zus meets TEFCA requirements vs. Metriport's basic compliance. (Source: Data Contribution Policy)</td>
+            </tr>
+            <tr>
+                <td><strong>Internal Lift Required</strong></td>
+                <td>• High technical implementation<br>• Extensive custom development<br>• Ongoing maintenance burden<br>• Limited vendor support</td>
+                <td>• <strong>Turnkey Canvas integration</strong><br>• Minimal technical implementation<br>• Vendor-managed maintenance<br>• Dedicated healthcare support team</td>
+                <td><span class="high-impact">OPERATIONAL EFFICIENCY</span>: Zus requires minimal internal lift vs. Metriport's high implementation burden. (Source: Canvas Partnership)</td>
+            </tr>
+        </table>
+        
+        <div class="summary">
+            <h2>Summary & Recommendation</h2>
+            
+            <h3>Current Praxis Staff Frustrations with Metriport:</h3>
+            <ul>
+                <li><strong>Data Delays</strong>: Manual refresh processes causing outdated patient information during visits</li>
+                <li><strong>Medication Reconciliation</strong>: Time-consuming manual reconciliation creating workflow bottlenecks</li>
+                <li><strong>HEDIS Reporting</strong>: Labor-intensive manual reporting affecting quality scores</li>
+                <li><strong>Canvas Integration</strong>: Generic API requiring extensive custom development resources</li>
+                <li><strong>Care Gap Identification</strong>: Reactive alerts missing proactive population health opportunities</li>
+            </ul>
+            
+            <h3>Zus Capabilities Aligned with Praxis Needs:</h3>
+            <ul>
+                <li><strong>Strategic Canvas Partnership</strong>: Direct integration eliminates custom development overhead</li>
+                <li><strong>Real-time Data Platform</strong>: Always-on ZAP addresses data freshness concerns</li>
+                <li><strong>AI-Powered Insights</strong>: Generated Patient Summary reduces provider cognitive load</li>
+                <li><strong>HEDIS Optimization</strong>: Automated transitions of care tracking improves quality scores</li>
+                <li><strong>Revenue Enhancement</strong>: AI-driven HCC capture increases risk adjustment opportunities</li>
+            </ul>
+            
+            <h3>Recommended Next Step:</h3>
+            <p><strong>Initiate a 90-day pilot program with Zus Health at 1-2 Canvas clinic sites to validate:</strong></p>
+            <ul>
+                <li>Canvas integration effectiveness</li>
+                <li>Provider workflow improvements</li>
+                <li>Data quality and timeliness gains</li>
+                <li>HEDIS reporting automation benefits</li>
+                <li>ROI measurement vs. current Metriport costs</li>
+            </ul>
+            
+            <p><strong>Timeline</strong>: Q4 2025 pilot launch with full evaluation by Q1 2026 for enterprise decision.</p>
+        </div>
+        
+        <div class="links">
+            <h2>Supporting Documentation & Data Sources</h2>
+            
+            <h3>Zus Health Technical Documentation:</h3>
+            <p><strong><a href="https://docs.zushealth.com/docs/zus-aggregated-profile">Zus Aggregated Profile (ZAP) Overview</a></strong><br>
+            <em>Comprehensive technical documentation on real-time patient data aggregation, FHIR normalization, and intelligent summarization capabilities</em></p>
+            
+            <p><strong><a href="https://docs.zushealth.com/docs/clinical-data-contribution-policy">Clinical Data Contribution Policy</a></strong><br>
+            <em>TEFCA compliance requirements, data contribution workflows, and integration pathways for Canvas and other EHRs</em></p>
+            
+            <h3>Strategic Partnership & Integration:</h3>
+            <p><strong><a href="https://zushealth.com/canvas-medical-and-zus-announce-strategic-product-partnership">Canvas Medical Strategic Product Partnership</a></strong><br>
+            <em>Official announcement detailing bidirectional integration, medication reconciliation features, and Canvas Contributor Program benefits</em></p>
+            
+            <h3>Analytics & Reporting Capabilities:</h3>
+            <p><strong><a href="https://zushealth.com/zus-data-mart">Zus Data Mart - SQL-Ready Analytics</a></strong><br>
+            <em>Data rectangularization process, Snowflake integration, and structured reporting capabilities for population health analytics</em></p>
+            
+            <p><strong><a href="https://zushealth.com/data-interoperability-as-hedis-helper">HEDIS Helper & Quality Reporting</a></strong><br>
+            <em>Transitions of care metrics, ADT coverage statistics, and HEDIS performance improvement case studies</em></p>
+            
+            <h3>AI & Clinical Intelligence:</h3>
+            <p><strong><a href="https://zushealth.com/ai-powered-insights-a-new-chapter-for-healthcare">AI-Powered Clinical Insights</a></strong><br>
+            <em>Generated Patient Summary (GPS) features, risk analysis capabilities, and AI-driven care gap identification tools</em></p>
+            
+            <p><em>Note: All links provide detailed technical specifications, ROI data, and implementation guidance for enterprise decision-making.</em></p>
+        </div>
+    </div>
+</body>
+</html>
