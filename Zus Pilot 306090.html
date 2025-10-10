@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Praxis Health × Zus Pilot - Roadmap</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #e8eef3 100%);
+            padding: 40px 20px;
+            color: #2c3e50;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+            padding: 60px 50px;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 60px;
+            border-bottom: 3px solid #2c5f8d;
+            padding-bottom: 35px;
+        }
+        
+        .header h1 {
+            font-size: 32px;
+            color: #2c5f8d;
+            font-weight: 700;
+            margin-bottom: 10px;
+            letter-spacing: -0.5px;
+        }
+        
+        .header h2 {
+            font-size: 18px;
+            color: #5a6c7d;
+            font-weight: 400;
+            margin-top: 8px;
+        }
+        
+        .timeline-container {
+            position: relative;
+            margin: 50px 0;
+        }
+        
+        .months-header {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            margin-bottom: 25px;
+            padding-left: 220px;
+        }
+        
+        .month {
+            text-align: center;
+            font-weight: 600;
+            font-size: 15px;
+            color: #34495e;
+            padding: 12px;
+            background: #ecf0f1;
+            border-right: 1px solid white;
+        }
+        
+        .month:last-child {
+            border-right: none;
+        }
+        
+        .gantt-row {
+            display: grid;
+            grid-template-columns: 220px 1fr;
+            margin-bottom: 25px;
+            align-items: center;
+            min-height: 110px;
+            padding-bottom: 20px;
+        }
+        
+        .phase-label {
+            font-weight: 600;
+            font-size: 14px;
+            padding: 20px 15px;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            height: 100%;
+            line-height: 1.6;
+            border-radius: 6px 0 0 6px;
+        }
+        
+        .phase-label.blue { background: linear-gradient(135deg, #2c5f8d 0%, #3a7ab5 100%); }
+        .phase-label.green { background: linear-gradient(135deg, #27ae60 0%, #2ecc71 100%); }
+        .phase-label.gray { background: linear-gradient(135deg, #546e7a 0%, #6b8390 100%); }
+        
+        .timeline-bar-container {
+            position: relative;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            background: #f8f9fa;
+            border: 1px solid #e0e0e0;
+            min-height: 95px;
+        }
+        
+        .milestone {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 10;
+            height: 80px;
+        }
+        
+        .milestone-label {
+            font-size: 11.5px;
+            color: white;
+            font-weight: 600;
+            line-height: 1.5;
+            text-align: center;
+            padding: 14px 10px;
+            border-radius: 6px;
+            box-shadow: 0 3px 12px rgba(0,0,0,0.2);
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .milestone-blue .milestone-label {
+            background: linear-gradient(135deg, #2c5f8d 0%, #3a7ab5 100%);
+        }
+        
+        .milestone-green .milestone-label {
+            background: linear-gradient(135deg, #27ae60 0%, #2ecc71 100%);
+        }
+        
+        .milestone-gray .milestone-label {
+            background: linear-gradient(135deg, #546e7a 0%, #6b8390 100%);
+        }
+        
+        .deliverables {
+            font-size: 12px;
+            color: #5a6c7d;
+            padding: 15px 20px;
+            background: #f8f9fa;
+            border-left: 4px solid #2c5f8d;
+            margin-top: 10px;
+            line-height: 1.7;
+            border-radius: 0 4px 4px 0;
+        }
+        
+        .deliverables.green-border {
+            border-left-color: #27ae60;
+        }
+        
+        .deliverables.gray-border {
+            border-left-color: #546e7a;
+        }
+        
+        .deliverables strong {
+            color: #34495e;
+        }
+        
+        .legend {
+            display: flex;
+            justify-content: center;
+            gap: 35px;
+            margin-top: 60px;
+            flex-wrap: wrap;
+            padding: 20px 0;
+        }
+        
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 14px;
+            font-weight: 500;
+        }
+        
+        .legend-color {
+            width: 35px;
+            height: 22px;
+            border-radius: 4px;
+        }
+        
+        .footer {
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 2px solid #ecf0f1;
+            text-align: center;
+            font-size: 13px;
+            color: #7f8c8d;
+            line-height: 1.6;
+        }
+        
+        @media print {
+            body {
+                background: white;
+                padding: 20px;
+            }
+            .container {
+                box-shadow: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Praxis Health × Zus Pilot | 90-Day Roadmap</h1>
+            <h2>Project Timeline: October 2025 – January 2026</h2>
+        </div>
+        
+        <div class="timeline-container">
+            <div class="months-header">
+                <div class="month">October 2025</div>
+                <div class="month">November 2025</div>
+                <div class="month">December 2025</div>
+                <div class="month">January 2026</div>
+            </div>
+            
+            <!-- Phase 1: Discovery -->
+            <div class="gantt-row">
+                <div class="phase-label blue">Phase 1<br>Discovery<br>(Days 1–30)</div>
+                <div class="timeline-bar-container">
+                    <div class="milestone milestone-blue" style="left: 0%; width: 50%;">
+                        <div class="milestone-label">10/7 Kickoff Complete<br>10/14 Discovery Launch<br>Cohort & Network Setup</div>
+                    </div>
+                </div>
+            </div>
+            <div class="deliverables">
+                <strong>Key Deliverables:</strong> Launch coordination with Praxis & Zus • Confirm cohort (~900 APC patients) and pilot sites (2 locations) • Execute Delegation of Authority (DoA) and activate network connection • Align KPIs and baseline data for operational and clinical metrics
+            </div>
+            
+            <!-- Phase 2: Pilot Execution -->
+            <div class="gantt-row">
+                <div class="phase-label green">Phase 2<br>Pilot Execution<br>(Days 31–60)</div>
+                <div class="timeline-bar-container">
+                    <div class="milestone milestone-green" style="left: 25%; width: 50%;">
+                        <div class="milestone-label">11/15 Pilot Go-Live<br>Sandbox & Live Environments<br>12/15 Midpoint Review</div>
+                    </div>
+                </div>
+            </div>
+            <div class="deliverables green-border">
+                <strong>Key Deliverables:</strong> Go-live in sandbox and live environments • Begin data flow between Greenway → Zus → Canvas • Conduct mid-point operational and clinical review • Validate data accuracy, alert timeliness, and ADT feed performance
+            </div>
+            
+            <!-- Phase 3: Evaluation & Scale Planning -->
+            <div class="gantt-row">
+                <div class="phase-label gray">Phase 3<br>Evaluation &<br>Scale Planning<br>(Days 61–90)</div>
+                <div class="timeline-bar-container">
+                    <div class="milestone milestone-gray" style="left: 75%; width: 25%;">
+                        <div class="milestone-label">1/15 Pilot Completion<br>Final Report & ROI</div>
+                    </div>
+                </div>
+            </div>
+            <div class="deliverables gray-border">
+                <strong>Key Deliverables:</strong> Capture performance data and user feedback • Review provider satisfaction and chart completeness • Generate outcomes and ROI report • Prepare Canvas alignment and scaling recommendations
+            </div>
+        </div>
+        
+        <div class="legend">
+            <div class="legend-item">
+                <div class="legend-color" style="background: linear-gradient(135deg, #2c5f8d 0%, #3a7ab5 100%);"></div>
+                <span>Phase 1: Discovery</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color" style="background: linear-gradient(135deg, #27ae60 0%, #2ecc71 100%);"></div>
+                <span>Phase 2: Pilot Execution</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color" style="background: linear-gradient(135deg, #546e7a 0%, #6b8390 100%);"></div>
+                <span>Phase 3: Evaluation & Scale Planning</span>
+            </div>
+        </div>
+        
+        <div class="footer">
+            <p><strong>Prepared by:</strong> Biz Con Ed LLC | <strong>Date:</strong> October 2025</p>
+            <p><strong>Project Objective:</strong> Evaluate Zus Health as long-term interoperability solution, replacing Metriport and improving care coordination</p>
+        </div>
+    </div>
+</body>
+</html>
